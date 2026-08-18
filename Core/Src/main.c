@@ -21,7 +21,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "FreeRTOS.h"
+#include "task.h"
+#include <stdio.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -49,7 +51,9 @@
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 /* USER CODE BEGIN PFP */
-
+static void led_green_handler(void *Parameters);
+static void led_red_handler(void *Parameters);
+static void led_orange_handler(void *Parameters);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -65,7 +69,10 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-
+  TaskHandle_t task1Handle;
+  TaskHandle_t task2Handle;
+  TaskHandle_t task3Handle;
+  BaseType_t status;
   /* USER CODE END 1 */
 
   /* MCU Configuration--------------------------------------------------------*/
@@ -87,6 +94,17 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
+  status = xTaskCreate(led_green_handler,"LedGreenTask",200,NULL,2,&task1Handle);
+  configASSERT(status == pdPASS);
+
+  status = xTaskCreate(led_red_handler,"LedRedTask",200,NULL,2,&task2Handle);
+  configASSERT(status == pdPASS);
+
+  status = xTaskCreate(led_orange_handler,"LedOrangeTask",200,NULL,2,&task3Handle);
+  configASSERT(status == pdPASS);
+
+  //Start the scheduler 
+  vTaskStartScheduler();
 
   /* USER CODE END 2 */
 
@@ -292,7 +310,33 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-
+static void led_green_handler(void *Parameters)
+{
+  while(1)
+  {
+    // Do the required operations.
+    HAL_GPIO_TogglePin(GPIOD, LED_GREEN_PIN);
+    HAL_Delay(1000); //blocking delay.
+  }
+}
+static void led_red_handler(void *Parameters)
+{
+  while(1)
+  {
+    //Do the required operations
+    HAL_GPIO_TogglePin(GPIOD, LED_RED_PIN);
+    HAL_Delay(800); 
+  }
+}
+static void led_orange_handler(void *Parameters)
+{
+  while(1)
+  {
+    //Do the required operations
+    HAL_GPIO_TogglePin(GPIOD, LED_ORANGE_PIN);
+    HAL_Delay(200); 
+  }
+}
 /* USER CODE END 4 */
 
 /**
