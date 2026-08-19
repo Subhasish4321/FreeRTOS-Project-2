@@ -1,7 +1,7 @@
 Common/ThirdParty/FreeRTOS/portable/MemMang/heap_4.o: \
  D:/Workspace/RTOS_workspace/Common/ThirdParty/FreeRTOS/portable/MemMang/heap_4.c \
  D:/Workspace/RTOS_workspace/Common/ThirdParty/FreeRTOS/include/FreeRTOS.h \
- D:/Workspace/RTOS_workspace/Common/ThirdParty/FreeRTOS/FreeRTOSConfig.h \
+ ../Core/Inc/FreeRTOSConfig.h \
  D:/Workspace/RTOS_workspace/Common/ThirdParty/SEGGER/OS/SEGGER_SYSVIEW_FreeRTOS.h \
  D:/Workspace/RTOS_workspace/Common/ThirdParty/SEGGER/SEGGER/SEGGER_SYSVIEW.h \
  D:/Workspace/RTOS_workspace/Common/ThirdParty/SEGGER/SEGGER/SEGGER.h \
@@ -17,7 +17,7 @@ Common/ThirdParty/FreeRTOS/portable/MemMang/heap_4.o: \
  D:/Workspace/RTOS_workspace/Common/ThirdParty/FreeRTOS/include/task.h \
  D:/Workspace/RTOS_workspace/Common/ThirdParty/FreeRTOS/include/list.h
 D:/Workspace/RTOS_workspace/Common/ThirdParty/FreeRTOS/include/FreeRTOS.h:
-D:/Workspace/RTOS_workspace/Common/ThirdParty/FreeRTOS/FreeRTOSConfig.h:
+../Core/Inc/FreeRTOSConfig.h:
 D:/Workspace/RTOS_workspace/Common/ThirdParty/SEGGER/OS/SEGGER_SYSVIEW_FreeRTOS.h:
 D:/Workspace/RTOS_workspace/Common/ThirdParty/SEGGER/SEGGER/SEGGER_SYSVIEW.h:
 D:/Workspace/RTOS_workspace/Common/ThirdParty/SEGGER/SEGGER/SEGGER.h:

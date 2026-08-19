@@ -1,7 +1,7 @@
 Common/ThirdParty/FreeRTOS/event_groups.o: \
  D:/Workspace/RTOS_workspace/Common/ThirdParty/FreeRTOS/event_groups.c \
  D:/Workspace/RTOS_workspace/Common/ThirdParty/FreeRTOS/include/FreeRTOS.h \
- D:/Workspace/RTOS_workspace/Common/ThirdParty/FreeRTOS/FreeRTOSConfig.h \
+ ../Core/Inc/FreeRTOSConfig.h \
  D:/Workspace/RTOS_workspace/Common/ThirdParty/SEGGER/OS/SEGGER_SYSVIEW_FreeRTOS.h \
  D:/Workspace/RTOS_workspace/Common/ThirdParty/SEGGER/SEGGER/SEGGER_SYSVIEW.h \
  D:/Workspace/RTOS_workspace/Common/ThirdParty/SEGGER/SEGGER/SEGGER.h \
@@ -21,7 +21,7 @@ Common/ThirdParty/FreeRTOS/event_groups.o: \
  D:/Workspace/RTOS_workspace/Common/ThirdParty/FreeRTOS/include/event_groups.h \
  D:/Workspace/RTOS_workspace/Common/ThirdParty/FreeRTOS/include/timers.h
 D:/Workspace/RTOS_workspace/Common/ThirdParty/FreeRTOS/include/FreeRTOS.h:
-D:/Workspace/RTOS_workspace/Common/ThirdParty/FreeRTOS/FreeRTOSConfig.h:
+../Core/Inc/FreeRTOSConfig.h:
 D:/Workspace/RTOS_workspace/Common/ThirdParty/SEGGER/OS/SEGGER_SYSVIEW_FreeRTOS.h:
 D:/Workspace/RTOS_workspace/Common/ThirdParty/SEGGER/SEGGER/SEGGER_SYSVIEW.h:
 D:/Workspace/RTOS_workspace/Common/ThirdParty/SEGGER/SEGGER/SEGGER.h:

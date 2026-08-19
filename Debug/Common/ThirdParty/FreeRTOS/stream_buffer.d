@@ -1,7 +1,7 @@
 Common/ThirdParty/FreeRTOS/stream_buffer.o: \
  D:/Workspace/RTOS_workspace/Common/ThirdParty/FreeRTOS/stream_buffer.c \
  D:/Workspace/RTOS_workspace/Common/ThirdParty/FreeRTOS/include/FreeRTOS.h \
- D:/Workspace/RTOS_workspace/Common/ThirdParty/FreeRTOS/FreeRTOSConfig.h \
+ ../Core/Inc/FreeRTOSConfig.h \
  D:/Workspace/RTOS_workspace/Common/ThirdParty/SEGGER/OS/SEGGER_SYSVIEW_FreeRTOS.h \
  D:/Workspace/RTOS_workspace/Common/ThirdParty/SEGGER/SEGGER/SEGGER_SYSVIEW.h \
  D:/Workspace/RTOS_workspace/Common/ThirdParty/SEGGER/SEGGER/SEGGER.h \
@@ -18,7 +18,7 @@ Common/ThirdParty/FreeRTOS/stream_buffer.o: \
  D:/Workspace/RTOS_workspace/Common/ThirdParty/FreeRTOS/include/list.h \
  D:/Workspace/RTOS_workspace/Common/ThirdParty/FreeRTOS/include/stream_buffer.h
 D:/Workspace/RTOS_workspace/Common/ThirdParty/FreeRTOS/include/FreeRTOS.h:
-D:/Workspace/RTOS_workspace/Common/ThirdParty/FreeRTOS/FreeRTOSConfig.h:
+../Core/Inc/FreeRTOSConfig.h:
 D:/Workspace/RTOS_workspace/Common/ThirdParty/SEGGER/OS/SEGGER_SYSVIEW_FreeRTOS.h:
 D:/Workspace/RTOS_workspace/Common/ThirdParty/SEGGER/SEGGER/SEGGER_SYSVIEW.h:
 D:/Workspace/RTOS_workspace/Common/ThirdParty/SEGGER/SEGGER/SEGGER.h:
