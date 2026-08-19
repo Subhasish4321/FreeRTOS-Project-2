@@ -317,29 +317,42 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 static void led_green_handler(void *Parameters)
 {
+	TickType_t  xPreviousWakeTime ;
+	xPreviousWakeTime = xTaskGetTickCount();
   while(1)
   {
     // Do the required operations.
     HAL_GPIO_TogglePin(GPIOD, LED_GREEN_PIN);
-    HAL_Delay(1000); //blocking delay.
+//    HAL_Delay(1000); //blocking delay.
+//    vTaskDelay(pdMS_TO_TICKS(1000));//unblocking delay
+    vTaskDelayUntil(&xPreviousWakeTime, pdMS_TO_TICKS(1000));
+
   }
 }
 static void led_red_handler(void *Parameters)
 {
+	  TickType_t  xPreviousWakeTime ;
+    xPreviousWakeTime = xTaskGetTickCount();
   while(1)
   {
     //Do the required operations
     HAL_GPIO_TogglePin(GPIOD, LED_RED_PIN);
-    HAL_Delay(800); 
+//    HAL_Delay(800);
+//    vTaskDelay(pdMS_TO_TICKS(800));
+    vTaskDelayUntil(&xPreviousWakeTime, pdMS_TO_TICKS(800));
   }
 }
 static void led_orange_handler(void *Parameters)
 {
+	TickType_t  xPreviousWakeTime ;
+	xPreviousWakeTime = xTaskGetTickCount();
   while(1)
   {
     //Do the required operations
     HAL_GPIO_TogglePin(GPIOD, LED_ORANGE_PIN);
-    HAL_Delay(200); 
+//    HAL_Delay(400);
+//    vTaskDelay(pdMS_TO_TICKS(400));
+    vTaskDelayUntil(&xPreviousWakeTime, pdMS_TO_TICKS(400));
   }
 }
 /* USER CODE END 4 */
