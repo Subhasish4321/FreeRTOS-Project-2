@@ -44,7 +44,11 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+TaskHandle_t volatile next_task_handle = NULL;
+TaskHandle_t task1Handle;
+TaskHandle_t task2Handle;
+TaskHandle_t task3Handle;
+TaskHandle_t btnTaskhandle;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -54,6 +58,7 @@ static void MX_GPIO_Init(void);
 static void led_green_handler(void *Parameters);
 static void led_red_handler(void *Parameters);
 static void led_orange_handler(void *Parameters);
+static void btn_task_handler(void *Parameters);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -69,9 +74,6 @@ int main(void)
 {
 
   /* USER CODE BEGIN 1 */
-  TaskHandle_t task1Handle;
-  TaskHandle_t task2Handle;
-  TaskHandle_t task3Handle;
   BaseType_t status;
   /* USER CODE END 1 */
 
@@ -99,16 +101,20 @@ int main(void)
   SEGGER_SYSVIEW_Conf();
   SEGGER_SYSVIEW_Start();
 
-  status = xTaskCreate(led_green_handler,"LedGreenTask",200,NULL,2,&task1Handle);
+  status = xTaskCreate(led_green_handler,"LedGreenTask",200,NULL,3,&task1Handle);
   configASSERT(status == pdPASS);
 
+  next_task_handle = task1Handle;
   status = xTaskCreate(led_red_handler,"LedRedTask",200,NULL,2,&task2Handle);
   configASSERT(status == pdPASS);
 
-  status = xTaskCreate(led_orange_handler,"LedOrangeTask",200,NULL,2,&task3Handle);
+  status = xTaskCreate(led_orange_handler,"LedOrangeTask",200,NULL,1,&task3Handle);
   configASSERT(status == pdPASS);
 
-  //Start the scheduler 
+  status = xTaskCreate(btn_task_handler,"btnTask",200,NULL,4,&btnTaskhandle);
+  configASSERT(status == pdPASS);
+
+  //Start the scheduler
   vTaskStartScheduler();
 
   /* USER CODE END 2 */
@@ -317,43 +323,85 @@ static void MX_GPIO_Init(void)
 /* USER CODE BEGIN 4 */
 static void led_green_handler(void *Parameters)
 {
-	TickType_t  xPreviousWakeTime ;
-	xPreviousWakeTime = xTaskGetTickCount();
+  BaseType_t status;
   while(1)
   {
-    // Do the required operations.
+	SEGGER_SYSVIEW_Print("Toggling LED green ");
     HAL_GPIO_TogglePin(GPIOD, LED_GREEN_PIN);
-//    HAL_Delay(1000); //blocking delay.
-//    vTaskDelay(pdMS_TO_TICKS(1000));//unblocking delay
-    vTaskDelayUntil(&xPreviousWakeTime, pdMS_TO_TICKS(1000));
-
+    status = xTaskNotifyWait(0, 0, NULL, pdMS_TO_TICKS(1000));
+    if(status == pdTRUE)
+    {
+    	/**
+    	 * Important because if tsk not suspended then it migh preemt to another task and on a
+    	 * button press it might change the nex_task_handle to
+    	 * another task and hence the current task will not be deleted,in that case.
+    	 * */
+    	vTaskSuspendAll();
+    	next_task_handle = task2Handle;
+    	xTaskResumeAll();
+    	HAL_GPIO_WritePin(GPIOD, LED_GREEN_PIN, GPIO_PIN_SET);
+    	vTaskDelete(NULL);
+    }
   }
 }
 static void led_red_handler(void *Parameters)
 {
-	  TickType_t  xPreviousWakeTime ;
-    xPreviousWakeTime = xTaskGetTickCount();
+  BaseType_t status;
   while(1)
   {
-    //Do the required operations
-    HAL_GPIO_TogglePin(GPIOD, LED_RED_PIN);
-//    HAL_Delay(800);
-//    vTaskDelay(pdMS_TO_TICKS(800));
-    vTaskDelayUntil(&xPreviousWakeTime, pdMS_TO_TICKS(800));
+	  SEGGER_SYSVIEW_Print("Toggling LED red ");
+	  HAL_GPIO_TogglePin(GPIOD, LED_RED_PIN);
+	  status = xTaskNotifyWait(0, 0, NULL, pdMS_TO_TICKS(800));
+	  if(status == pdTRUE)
+	  {
+		vTaskSuspendAll();
+		next_task_handle = task3Handle;
+		xTaskResumeAll();
+		HAL_GPIO_WritePin(GPIOD, LED_RED_PIN, GPIO_PIN_SET);
+		vTaskDelete(NULL);
+	  }
   }
 }
 static void led_orange_handler(void *Parameters)
 {
-	TickType_t  xPreviousWakeTime ;
-	xPreviousWakeTime = xTaskGetTickCount();
+  BaseType_t status;
   while(1)
   {
-    //Do the required operations
-    HAL_GPIO_TogglePin(GPIOD, LED_ORANGE_PIN);
-//    HAL_Delay(400);
-//    vTaskDelay(pdMS_TO_TICKS(400));
-    vTaskDelayUntil(&xPreviousWakeTime, pdMS_TO_TICKS(400));
+      HAL_GPIO_TogglePin(GPIOD, LED_ORANGE_PIN);
+      SEGGER_SYSVIEW_Print("Toggling LED orange ");
+	  HAL_GPIO_TogglePin(GPIOD, LED_ORANGE_PIN);
+	  status = xTaskNotifyWait(0, 0, NULL, pdMS_TO_TICKS(400));
+	  if(status == pdTRUE)
+	  {
+		vTaskSuspendAll();
+		next_task_handle = NULL;
+		xTaskResumeAll();
+		HAL_GPIO_WritePin(GPIOD, LED_ORANGE_PIN, GPIO_PIN_SET);
+		vTaskDelete(btnTaskhandle);
+		vTaskDelete(NULL);
+	  }
   }
+}
+
+static void btn_task_handler(void *Parameters)
+{
+	uint8_t btn_read = 0;
+	uint8_t prev_read = 0;
+	while(1)
+	{
+		btn_read = HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_0);
+		if(btn_read)
+		{
+			if(! prev_read)
+			{
+				xTaskNotify(next_task_handle ,0,eNoAction );
+			}
+
+		}
+		prev_read = btn_read;
+		vTaskDelay(pdMS_TO_TICKS(10));
+	}
+
 }
 /* USER CODE END 4 */
 
